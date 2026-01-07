@@ -21,6 +21,8 @@ const OnBoarding = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        let didRun = false; // prevent multiple runs in Strict Mode
+
         async function markInitialLoginComplete(userUID: string) {
             try {
                 const userRef = doc(db, 'users', userUID);
@@ -36,21 +38,22 @@ const OnBoarding = () => {
             try {
                 const enrollmentsRef = collection(db, 'enrollments');
 
-                // Prevent duplicate enrollment
+                // Check for duplicate enrollment
                 const q = query(
                     enrollmentsRef,
-                    where('userID', '==', doc(db, `users/${userId}`)),
-                    where('classID', '==', doc(db, `classes/${FIXED_CLASS_ID}`))
+                    where('userID', '==', userId),
+                    where('classID', '==', FIXED_CLASS_ID)
                 );
                 const existing = await getDocs(q);
+
                 if (!existing.empty) {
                     console.log(`User ${userId} is already enrolled in the fixed class.`);
                     return;
                 }
 
                 await addDoc(enrollmentsRef, {
-                    classID: doc(db, `classes/${FIXED_CLASS_ID}`),
-                    userID: doc(db, `users/${userId}`),
+                    classID: FIXED_CLASS_ID,
+                    userID: userId,
                     role: role,
                     createdAt: serverTimestamp(),
                 });
@@ -63,6 +66,9 @@ const OnBoarding = () => {
         }
 
         async function onBoard() {
+            if (didRun) return; // prevent multiple runs
+            didRun = true;
+
             const user = getAuth().currentUser;
 
             if (!user) {
