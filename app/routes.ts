@@ -10,7 +10,7 @@ export default [
     // Bloome routes
     {
         path: ':userID/onBoarding',
-        file: 'routes/bloome/onBoarding/page.tsx',
+        file: 'routes/bloome/onboarding/page.tsx',
     },
     {
         path: ':userID/dashboard',
