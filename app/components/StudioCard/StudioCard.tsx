@@ -1,11 +1,27 @@
+import { getAuth } from 'firebase/auth';
+import { useNavigate } from 'react-router';
 import type { Class } from '~/types/Class';
 
 const StudioCard = (props: Class) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if(!user) {
+        return
+    }
+
+    const navigate = useNavigate();
+
     return (
-        <div className='h-fit relative rounded-2xl overflow-hidden shadow-md cursor-pointer bg-(--surface-0) border-2 border-(--card-accent) max-w-1/3 min-w-1/4 grow' onClick={() => {}}>
+        <div
+            className='h-fit relative rounded-2xl overflow-hidden shadow-md cursor-pointer bg-(--surface-0) border-2 border-(--card-accent) max-w-1/3 min-w-1/4 grow'
+            onClick={() => {
+                navigate(`/${user.uid}/${props.id}/studio`);
+            }}
+        >
             <div className='relative h-36'>
                 <img
-                    src={`${props.hero_url || ''}`}
+                    src={`${props.hero_url}`}
                     alt={`${props.name}`}
                     className='absolute inset-0 w-full h-full object-cover'
                 />

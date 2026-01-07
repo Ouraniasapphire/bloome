@@ -3,8 +3,7 @@ export type Class = {
     name: string;
     description: string;
     teacher_id: string;
-    invite_code?: string;
-    hero_url?: string;
+    hero_url: string;
     room?: string;
     hour: string;
 }

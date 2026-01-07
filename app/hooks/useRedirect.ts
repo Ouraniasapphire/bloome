@@ -28,7 +28,7 @@ export default function useRedirect() {
 
             // Navigate to the dynamic URL
             navigate(`/${dynamicKey}/${url}`, { replace: true });
-            console.log('Navigated to:', `/${dynamicKey}/${url}`);
+            // console.log('Navigated to:', `/${dynamicKey}/${url}`);
         } catch (err) {
             console.error('Redirect failed:', err);
         }

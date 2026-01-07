@@ -3,13 +3,15 @@ import Loading from '~/components/loading/Loading';
 import useAuth from '~/hooks/useAuth';
 import useRedirect from '~/hooks/useRedirect';
 
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '~/clients/firebaseClient';
+
 export default function Redirect() {
     const [loading, setLoading] = useState(true);
     const { user, loading: authLoading } = useAuth(); // make sure your hook returns auth loading state
     const redirect = useRedirect();
 
     useEffect(() => {
-
         if (authLoading) return;
         if (!user) {
             window.location.href = '/';
@@ -18,7 +20,25 @@ export default function Redirect() {
 
         const doRedirect = async () => {
             try {
-                await redirect('dashboard');
+                // Fetch the user's Firestore doc
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (!userDocSnap.exists()) {
+                    console.error('User document not found!');
+                    await redirect('dashboard');
+                    return;
+                }
+
+                const userData = userDocSnap.data();
+
+                if (userData?.initialLogin) {
+                    // If initial login, redirect to onboarding
+                    await redirect('onBoarding');
+                } else {
+                    // Otherwise, redirect to dashboard
+                    await redirect('dashboard');
+                }
             } catch (err) {
                 console.error('Redirect failed:', err);
             } finally {

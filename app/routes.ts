@@ -9,6 +9,10 @@ export default [
 
     // Bloome routes
     {
+        path: ':userID/onBoarding',
+        file: 'routes/bloome/onBoarding/page.tsx',
+    },
+    {
         path: ':userID/dashboard',
         file: 'routes/bloome/dashboard/page.tsx',
     },
@@ -19,6 +23,10 @@ export default [
     {
         path: ':userid/studio-manager',
         file: 'routes/bloome/admin/studioManager/page.tsx',
+    },
+    {
+        path: ':userid/:classID/studio',
+        file: 'routes/bloome/studio/page.tsx',
     },
 
     // Forge routes
