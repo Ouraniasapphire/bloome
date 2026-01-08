@@ -81,7 +81,7 @@ const Navbar = () => {
         return (
             <button
                 onClick={() => {
-                    redirect('/settings');
+                    redirect('settings');
                 }}
                 className='w-12 h-12 bg-(--surface-0) border-0! p-0! hover:cursor-pointer'
             >
@@ -91,18 +91,22 @@ const Navbar = () => {
     };
 
     const studentButtons = [
-        <button key='Dashboard' onClick={() => redirect('/dashboard')}>
+        <button key='Dashboard' onClick={() => redirect('dashboard')}>
             Dashboard
         </button>,
     ];
 
     const teacherButtons = [
-        <button key='Dashboard' onClick={() => redirect('/dashboard')}>
+        <button key='Dashboard' onClick={() => redirect('dashboard')}>
             Dashboard
         </button>,
-        <button key='Studio Manager' onClick={() => redirect('/studio-manager')}>
+        <button key='Studio Manager' onClick={() => redirect('studio-manager')}>
             {' '}
             Studio Manager
+        </button>,
+        <button key='onboarding' onClick={() => redirect('onBoarding')}>
+            {' '}
+            Admin OnBoarding
         </button>,
     ];
 

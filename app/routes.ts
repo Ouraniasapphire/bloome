@@ -9,10 +9,6 @@ export default [
 
     // Bloome routes
     {
-        path: ':userID/onBoarding',
-        file: 'routes/bloome/onboarding/page.tsx',
-    },
-    {
         path: ':userID/dashboard',
         file: 'routes/bloome/dashboard/page.tsx',
     },
@@ -23,6 +19,10 @@ export default [
     {
         path: ':userid/studio-manager',
         file: 'routes/bloome/admin/studioManager/page.tsx',
+    },
+    {
+        path: ':userid/onBoarding',
+        file: 'routes/bloome/admin/onboarding/page.tsx',
     },
     {
         path: ':userid/:classID/studio',

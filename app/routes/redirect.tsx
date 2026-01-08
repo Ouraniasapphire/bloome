@@ -30,15 +30,8 @@ export default function Redirect() {
                     return;
                 }
 
-                const userData = userDocSnap.data();
 
-                if (userData?.initialLogin) {
-                    // If initial login, redirect to onboarding
-                    await redirect('onBoarding');
-                } else {
-                    // Otherwise, redirect to dashboard
-                    await redirect('dashboard');
-                }
+                await redirect('dashboard');
             } catch (err) {
                 console.error('Redirect failed:', err);
             } finally {

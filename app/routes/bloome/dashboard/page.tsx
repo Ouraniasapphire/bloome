@@ -12,6 +12,7 @@ const Dashboard = () => {
             try {
                 const classes = await fetchClassesByID();
                 setCards(classes);
+                console.log(classes);
             } catch (err) {
                 console.error('Failed to load classes:', err);
             } finally {

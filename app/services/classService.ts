@@ -9,24 +9,26 @@ export async function fetchClassesByID(): Promise<ClassWithRole[]> {
     const user = getAuth().currentUser;
     if (!user) throw new Error('Not authenticated');
 
-    // Create the exact reference to the user document
-    const userRef = doc(db, 'users', user.uid);
-
-    const q = query(collection(db, 'enrollments'), where('userID', '==', userRef));
+    // Query enrollments by string UID
+    const q = query(
+        collection(db, 'enrollments'),
+        where('userID', '==', user.uid) // <-- string comparison
+    );
 
     const enrollmentSnap = await getDocs(q);
 
     const classes = await Promise.all(
         enrollmentSnap.docs.map(async (enrollmentDoc) => {
             const enrollmentData = enrollmentDoc.data();
-            const classRef = enrollmentData.classID;
+            const classID = enrollmentData.classID as string; // string ID of the class
 
+            // Get the class document by string ID
+            const classRef = doc(db, 'classes', classID);
             const classSnap = await getDoc(classRef);
             if (!classSnap.exists()) return null;
 
             const classData = classSnap.data() as Class;
 
-            // Map Firestore data to ClassWithRole
             return {
                 id: classData.id,
                 name: classData.name,
@@ -35,7 +37,7 @@ export async function fetchClassesByID(): Promise<ClassWithRole[]> {
                 room: classData.room || '',
                 hero_url: classData.hero_url,
                 teacher_id: classData.teacher_id,
-                role: enrollmentData.role
+                role: enrollmentData.role as string,
             } as ClassWithRole;
         })
     );
@@ -60,8 +62,8 @@ export async function enrollUserInFixedClass(
 
         await setDoc(enrollmentRef, {
             classID: classRef, // Firestore reference
-            userID: userRef, // Firestore reference
-            role: role, // 'student' or 'teacher'
+            userID: userUID, // store as string
+            role: role,
         });
 
         console.log(`User ${userUID} enrolled in class as ${role}.`);
